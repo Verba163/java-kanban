@@ -1,5 +1,6 @@
 package ru.yandex.practicum.managers;
 
+import ru.yandex.practicum.enums.TaskStatus;
 import ru.yandex.practicum.models.Epic;
 import ru.yandex.practicum.models.Subtask;
 import ru.yandex.practicum.models.Task;
@@ -28,12 +29,20 @@ public class TaskManager {
         return task;
     }
 
-    public Subtask createSubtask(String title, String description) {
+    public Subtask createSubtask(String title, String description, int epicId) {
         int taskId = generateTaskId();
         Subtask subtask = new Subtask(title, description, taskId);
         tasks.put(taskId, subtask);
+
+        Epic epic = (Epic) tasks.get(epicId);
+        if (epic != null) {
+            epic.addSubtask(subtask);
+            updateEpicStatus(epic);
+        }
+
         return subtask;
     }
+
 
     public Epic createEpic(String title, String description) {
         int taskId = generateTaskId();
@@ -67,14 +76,31 @@ public class TaskManager {
         tasks.clear();
     }
 
-    public void deleteEpic(int epicId) { // удаляем эпик с подзадачами
+    public void updateEpicStatus(Epic epic) {
+        if (epic.getSubtasks().isEmpty()) {
+            epic.setStatus(TaskStatus.NEW);
+        } else if (allSubtasksCompleted(epic)) {
+            epic.setStatus(TaskStatus.DONE);
+        } else {
+            epic.setStatus(TaskStatus.IN_PROGRESS);
+        }
+    }
+
+    private boolean allSubtasksCompleted(Epic epic) {
+        for (Subtask subtask : epic.getSubtasks()) {
+            if (subtask.getStatus() != TaskStatus.DONE) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void deleteEpic(int epicId) {
         Epic epic = (Epic) tasks.remove(epicId);
         if (epic != null) {
             for (Subtask subtask : epic.getSubtasks()) {
                 tasks.remove(subtask.getTaskId());
             }
-
         }
     }
-
 }

@@ -16,7 +16,6 @@ public class Epic extends Task {
     public void addSubtask(Subtask subtask) {
         subtasks.add(subtask);
         subtask.setEpic(this);
-        updateStatus(); // обновили статус после добавления задачи
     }
 
 
@@ -24,53 +23,10 @@ public class Epic extends Task {
         return subtasks;
     }
 
-
-    public boolean checkCompletion() {
-        for (Subtask subtask : subtasks) {
-            if (subtask.getStatus() != TaskStatus.DONE) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-
-    private boolean areAllSubtasksNew() {
-        if (subtasks.isEmpty()) {
-            return true;
-        }
-
-        for (Subtask subtask : subtasks) {
-            if (subtask.getStatus() != TaskStatus.NEW) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-
-    public void updateStatus() {
-        if (areAllSubtasksNew()) {
-            setStatus(TaskStatus.NEW);
-        } else if (checkCompletion()) {
-            setStatus(TaskStatus.DONE);
-        } else {
-            setStatus(TaskStatus.IN_PROGRESS);
-        }
-    }
-
     public void removeSubtasks(Subtask subtask) {
         if (subtasks.remove(subtask)) {
             subtask.setEpic(null);
-            updateStatus(); // обновляем статус после удаления подзадачи
         }
-    }
-
-
-    public void clearSubtasks(Subtask subtask) { // обновляем статус после удаления всех подзадач
-        subtasks.clear();
-        updateStatus();
     }
 
 
