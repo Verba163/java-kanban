@@ -1,6 +1,10 @@
+package ru.yandex.practicum.models;
+
+import ru.yandex.practicum.enums.TaskStatus;
+
 import java.util.ArrayList;
 
-class Epic extends Task {
+public class Epic extends Task {
     private final ArrayList<Subtask> subtasks;
 
     public Epic(String title, String description, int taskId) {

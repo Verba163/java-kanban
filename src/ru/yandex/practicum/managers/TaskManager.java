@@ -1,3 +1,8 @@
+package ru.yandex.practicum.managers;
+
+import ru.yandex.practicum.models.Epic;
+import ru.yandex.practicum.models.Subtask;
+import ru.yandex.practicum.models.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;

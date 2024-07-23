@@ -1,6 +1,10 @@
+package ru.yandex.practicum.models;
+
+import ru.yandex.practicum.enums.TaskStatus;
+
 import java.util.Objects;
 
-class Task {
+public class Task {
 
     private String title;
     private String description;

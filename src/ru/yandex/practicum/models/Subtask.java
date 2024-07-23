@@ -1,6 +1,8 @@
+package ru.yandex.practicum.models;
+
 import java.util.Objects;
 
-class Subtask extends Task {
+public class Subtask extends Task {
     private Epic epic;
 
     public Subtask(String title, String description, int taskId) {
@@ -19,11 +21,11 @@ class Subtask extends Task {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        Subtask subtask = (Subtask) o;
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        if (!super.equals(obj)) return false;
+        Subtask subtask = (Subtask) obj;
         return Objects.equals(epic, subtask.epic);
     }
 
