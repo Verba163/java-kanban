@@ -16,6 +16,7 @@ public class Epic extends Task {
     public void addSubtask(Subtask subtask) {
         subtasks.add(subtask);
         subtask.setEpic(this);
+        updateStatus(); // обновили статус после добавления задачи
     }
 
 
@@ -57,6 +58,19 @@ public class Epic extends Task {
         } else {
             setStatus(TaskStatus.IN_PROGRESS);
         }
+    }
+
+    public void removeSubtasks(Subtask subtask) {
+        if (subtasks.remove(subtask)) {
+            subtask.setEpic(null);
+            updateStatus(); // обновляем статус после удаления подзадачи
+        }
+    }
+
+
+    public void clearSubtasks(Subtask subtask) { // обновляем статус после удаления всех подзадач
+        subtasks.clear();
+        updateStatus();
     }
 
 

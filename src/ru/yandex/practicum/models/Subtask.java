@@ -1,5 +1,7 @@
 package ru.yandex.practicum.models;
 
+import ru.yandex.practicum.enums.TaskStatus;
+
 import java.util.Objects;
 
 public class Subtask extends Task {
@@ -18,6 +20,18 @@ public class Subtask extends Task {
         return "Subtask{" +
                 "epic=" + epic +
                 '}';
+    }
+
+    public Epic getEpic() {
+        return epic;
+    }
+
+    @Override
+    public void setStatus(TaskStatus status) {
+        super.setStatus(status);
+        if (epic != null) {
+            epic.updateStatus(); // обновляем статус эпика при обновлении подзадачи
+        }
     }
 
     @Override

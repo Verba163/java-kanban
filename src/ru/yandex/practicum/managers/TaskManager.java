@@ -50,7 +50,7 @@ public class TaskManager {
         tasks.put(task.getTaskId(), task);
     }
 
-    public void deleteTask(int taskId) {
+    public void deleteTask(int taskId) { //удаляем таск по айди
         tasks.remove(taskId);
     }
 
@@ -66,4 +66,15 @@ public class TaskManager {
     public void removeAllTasks() {
         tasks.clear();
     }
+
+    public void deleteEpic(int epicId) { // удаляем эпик с подзадачами
+        Epic epic = (Epic) tasks.remove(epicId);
+        if (epic != null) {
+            for (Subtask subtask : epic.getSubtasks()) {
+                tasks.remove(subtask.getTaskId());
+            }
+
+        }
+    }
+
 }
