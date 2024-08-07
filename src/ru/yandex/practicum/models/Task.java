@@ -6,10 +6,10 @@ import java.util.Objects;
 
 public class Task {
 
-    private String title;
-    private String description;
+    protected String title;
+    protected String description;
     private final int taskId;
-    private TaskStatus status;
+    protected TaskStatus status;
 
     public Task(String title, String description, int taskId) {
         this.title = title;
@@ -59,7 +59,7 @@ public class Task {
         return Objects.hash(title, description, taskId, status);
     }
 
-    @Override
+   @Override
     public String toString() {
         return "Task{" +
                 "title='" + title + '\'' +

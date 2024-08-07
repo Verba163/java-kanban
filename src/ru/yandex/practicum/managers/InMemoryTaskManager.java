@@ -1,6 +1,7 @@
 package ru.yandex.practicum.managers;
 
 import ru.yandex.practicum.enums.TaskStatus;
+import ru.yandex.practicum.interfaces.TaskManagers;
 import ru.yandex.practicum.models.Epic;
 import ru.yandex.practicum.models.Subtask;
 import ru.yandex.practicum.models.Task;
@@ -8,20 +9,24 @@ import ru.yandex.practicum.models.Task;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class TaskManager {
+public class InMemoryTaskManager implements TaskManagers {
 
     private int taskIdCounter;
     private final HashMap<Integer, Task> tasks;
 
-    public TaskManager() {
+
+    public InMemoryTaskManager() {
         this.taskIdCounter = 1;
         this.tasks = new HashMap<>();
+
     }
 
+    @Override
     public int generateTaskId() {
         return taskIdCounter++;
     }
 
+    @Override
     public Task createTask(String title, String description) {
         int taskId = generateTaskId();
         Task task = new Task(title, description, taskId);
@@ -29,6 +34,7 @@ public class TaskManager {
         return task;
     }
 
+    @Override
     public Subtask createSubtask(String title, String description, int epicId) {
         int taskId = generateTaskId();
         Subtask subtask = new Subtask(title, description, taskId);
@@ -43,7 +49,7 @@ public class TaskManager {
         return subtask;
     }
 
-
+    @Override
     public Epic createEpic(String title, String description) {
         int taskId = generateTaskId();
         Epic epic = new Epic(title, description, taskId);
@@ -51,31 +57,38 @@ public class TaskManager {
         return epic;
     }
 
+    @Override
     public Task getTask(int taskId) {
         return tasks.get(taskId);
     }
 
+    @Override
     public void updateTask(Task task) {
         tasks.put(task.getTaskId(), task);
     }
 
-    public void deleteTask(int taskId) { //удаляем таск по айди
+    @Override
+    public void deleteTask(int taskId) {
         tasks.remove(taskId);
     }
 
+    @Override
     public ArrayList<Task> getAllTasks() {
         return new ArrayList<>(tasks.values());
     }
 
+    @Override
     public ArrayList<Subtask> getSubtasksByEpic(int epicId) {
         Epic epic = (Epic) tasks.get(epicId);
         return epic != null ? epic.getSubtasks() : new ArrayList<>();
     }
 
+    @Override
     public void removeAllTasks() {
         tasks.clear();
     }
 
+    @Override
     public void updateEpicStatus(Epic epic) {
         if (epic.getSubtasks().isEmpty()) {
             epic.setStatus(TaskStatus.NEW);
@@ -86,15 +99,7 @@ public class TaskManager {
         }
     }
 
-    private boolean allSubtasksCompleted(Epic epic) {
-        for (Subtask subtask : epic.getSubtasks()) {
-            if (subtask.getStatus() != TaskStatus.DONE) {
-                return false;
-            }
-        }
-        return true;
-    }
-
+    @Override
     public void deleteEpic(int epicId) {
         Epic epic = (Epic) tasks.remove(epicId);
         if (epic != null) {
@@ -103,4 +108,15 @@ public class TaskManager {
             }
         }
     }
+    public void updateTaskStatus(int taskId, TaskStatus newStatus) {
+        Task task = tasks.get(taskId);
+        if (task != null) {
+            task.setStatus(newStatus);
+            System.out.println("Статус задачи с ID " + taskId + " обновлён на " + newStatus);
+        } else {
+            System.out.println("Задача с ID " + taskId + " не найдена.");
+        }
+    }
+
 }
+
