@@ -1,4 +1,4 @@
-package ru.yandex.practicum.tests;
+package taskManagerTests;
 
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -7,8 +7,6 @@ import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.models.Task;
 import ru.yandex.practicum.models.Epic;
 import ru.yandex.practicum.models.Subtask;
-import ru.yandex.practicum.managers.InMemoryTaskManager;
-import ru.yandex.practicum.enums.TaskStatus;
 
 public class TaskTest {
 

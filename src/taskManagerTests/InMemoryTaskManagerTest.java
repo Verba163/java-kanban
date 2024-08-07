@@ -1,4 +1,4 @@
-package ru.yandex.practicum.tests;
+package taskManagerTests;
 
 
 import static org.junit.jupiter.api.Assertions.*;
