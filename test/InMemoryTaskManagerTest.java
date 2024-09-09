@@ -63,7 +63,11 @@ public class InMemoryTaskManagerTest {
     public void testTaskUpdateReflectsInHistory() {
         InMemoryTaskManager taskManager = new InMemoryTaskManager();
         InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
-        Task task = taskManager.createTask("Задача", "Описание");
+
+        String taskName = "Задача";
+        String taskDescription = "Описание";
+
+        Task task = taskManager.createTask(taskName, taskDescription);
         historyManager.add(task);
 
 
