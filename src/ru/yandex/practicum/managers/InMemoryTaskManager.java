@@ -108,6 +108,7 @@ public class InMemoryTaskManager implements TaskManagers {
             }
         }
     }
+
     public void updateTaskStatus(int taskId, TaskStatus newStatus) {
         Task task = tasks.get(taskId);
         if (task != null) {
