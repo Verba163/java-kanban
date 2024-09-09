@@ -61,5 +61,30 @@ public class InMemoryTaskManagerTest {
         assertEquals(1, history.size(), "История должна содержать одну задачу.");
         assertEquals(task, history.get(0), "Задача в истории не совпадает с добавленной.");
     }
+
+    @Test
+    public void testTaskUpdateReflectsInHistory() {
+        InMemoryTaskManager taskManager = new InMemoryTaskManager();
+        InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
+        Task task = taskManager.createTask("Задача", "Описание");
+        historyManager.add(task);
+
+
+        Task updatedTask = taskManager.getTask(task.getTaskId());
+        ArrayList<Task> history = historyManager.getHistory();
+
+        assertEquals(1, history.size(), "История должна содержать одну задачу.");
+        assertEquals(updatedTask, history.get(0), "Обновленная задача должна присутствовать в истории.");
+    }
+
+    @Test
+    public void testDuplicateTaskHandling() {
+        InMemoryTaskManager taskManager = new InMemoryTaskManager();
+        InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
+        Task task1 = taskManager.createTask("Задача 1", "Описание 1");
+        Task task2 = taskManager.createTask("Задача 2", "Описание 2");
+        String expectedMessage = "Задача с таким ID уже существует!";
+
+    }
 }
 
