@@ -1,6 +1,5 @@
 package ru.yandex.practicum.models;
 
-import ru.yandex.practicum.enums.TaskStatus;
 
 import java.util.ArrayList;
 
@@ -12,12 +11,10 @@ public class Epic extends Task {
         this.subtasks = new ArrayList<>();
     }
 
-
     public void addSubtask(Subtask subtask) {
         subtasks.add(subtask);
         subtask.setEpic(this);
     }
-
 
     public ArrayList<Subtask> getSubtasks() {
         return subtasks;
