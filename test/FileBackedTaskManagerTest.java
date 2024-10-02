@@ -2,6 +2,8 @@ import org.junit.jupiter.api.*;
 import ru.yandex.practicum.streams.FileBackedTaskManager;
 
 import java.io.File;
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class FileBackedTaskManagerTest {
@@ -11,6 +13,14 @@ class FileBackedTaskManagerTest {
     @BeforeEach
     void setUp() {
         File file = new File(FILE_PATH);
+        try {
+            if (file.exists()) {
+                file.delete();
+            }
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         manager = new FileBackedTaskManager(file);
     }
 
