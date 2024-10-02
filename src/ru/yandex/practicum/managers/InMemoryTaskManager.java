@@ -12,14 +12,19 @@ import java.util.HashMap;
 public class InMemoryTaskManager implements TaskManagers {
 
     private int taskIdCounter;
-    private final HashMap<Integer, Task> tasks;
+    public final HashMap<Integer, Task> tasks;
+    public final HashMap<Integer, Epic> epics;
+    public final HashMap<Integer, ArrayList<Subtask>> subtasksByEpic;
 
 
     public InMemoryTaskManager() {
         this.taskIdCounter = 1;
         this.tasks = new HashMap<>();
+        this.epics = new HashMap<>();
+        this.subtasksByEpic = new HashMap<>();
 
     }
+
 
     @Override
     public int generateTaskId() {
@@ -34,18 +39,19 @@ public class InMemoryTaskManager implements TaskManagers {
         return task;
     }
 
+
     @Override
     public Subtask createSubtask(String title, String description, int epicId) {
         int taskId = generateTaskId();
         Subtask subtask = new Subtask(title, description, taskId);
         tasks.put(taskId, subtask);
 
-        Epic epic = (Epic) tasks.get(epicId);
+        Epic epic = epics.get(epicId);
         if (epic != null) {
             epic.addSubtask(subtask);
+            subtasksByEpic.computeIfAbsent(epicId, k -> new ArrayList<>()).add(subtask);
             updateEpicStatus(epic);
         }
-
         return subtask;
     }
 
@@ -54,6 +60,7 @@ public class InMemoryTaskManager implements TaskManagers {
         int taskId = generateTaskId();
         Epic epic = new Epic(title, description, taskId);
         tasks.put(taskId, epic);
+        epics.put(taskId, epic);
         return epic;
     }
 
@@ -79,8 +86,8 @@ public class InMemoryTaskManager implements TaskManagers {
 
     @Override
     public ArrayList<Subtask> getSubtasksByEpic(int epicId) {
-        Epic epic = (Epic) tasks.get(epicId);
-        return epic != null ? epic.getSubtasks() : new ArrayList<>();
+        Epic epic = epics.get(epicId);
+        return epic != null ? subtasksByEpic.getOrDefault(epicId, new ArrayList<>()) : new ArrayList<>();
     }
 
     @Override
@@ -119,5 +126,8 @@ public class InMemoryTaskManager implements TaskManagers {
         }
     }
 
+    public HashMap<Integer, Task> getTasks() {
+        return tasks;
+    }
 }
 

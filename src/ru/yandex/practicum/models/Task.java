@@ -45,6 +45,9 @@ public class Task {
         this.status = task.status;
 
     }
+    public String toCSV() {
+        return taskId + "," + title + "," + status + "," + description + ",";
+    }
 
     @Override
     public boolean equals(Object obj) {
@@ -59,14 +62,9 @@ public class Task {
         return Objects.hash(title, description, taskId, status);
     }
 
-   @Override
+     @Override
     public String toString() {
-        return "Task{" +
-                "title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", taskId=" + taskId +
-                ", status=" + status +
-                '}';
+         return String.format(taskId + "Task: %s, %s, %d, %s", title, description, status);
     }
 }
 

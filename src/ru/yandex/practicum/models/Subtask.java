@@ -18,6 +18,11 @@ public class Subtask extends Task {
     }
 
     @Override
+    public String toCSV() {
+        return super.toCSV() + epic.getTaskId();
+    }
+
+    @Override
     public String toString() {
         return "Subtask{id=" + getTaskId() + ", title='" + getTitle() + "', status='" + getStatus() + "'}";
     }
