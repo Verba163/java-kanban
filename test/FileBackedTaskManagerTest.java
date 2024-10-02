@@ -29,11 +29,7 @@ class FileBackedTaskManagerTest {
         manager.createTask("Task 2", "Description 2");
         manager.createEpic("new", "New");
         manager.createSubtask("1", "1", 3);
-
-
         manager.save();
-
-
         FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(new File(FILE_PATH));
 
 

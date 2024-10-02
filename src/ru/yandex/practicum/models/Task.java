@@ -64,7 +64,12 @@ public class Task {
 
     @Override
     public String toString() {
-        return String.format(taskId + "Task: %s, %s, %d, %s", title, description, status);
+        return "Task{" +
+                "title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", taskId=" + taskId +
+                ", status=" + status +
+                '}';
     }
 }
 
