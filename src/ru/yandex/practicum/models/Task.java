@@ -43,8 +43,8 @@ public class Task {
         this.title = task.title;
         this.description = task.description;
         this.status = task.status;
-
     }
+
     public String toCSV() {
         return taskId + "," + title + "," + status + "," + description + ",";
     }
@@ -62,9 +62,9 @@ public class Task {
         return Objects.hash(title, description, taskId, status);
     }
 
-     @Override
+    @Override
     public String toString() {
-         return String.format(taskId + "Task: %s, %s, %d, %s", title, description, status);
+        return String.format(taskId + "Task: %s, %s, %d, %s", title, description, status);
     }
 }
 
