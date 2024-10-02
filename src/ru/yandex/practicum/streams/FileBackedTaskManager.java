@@ -42,14 +42,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",", -1);
-                if (parts.length < 5) continue;
+                String[] buildText = line.split(",", -1);
+                if (buildText.length < 5) continue;
 
-                String type = parts[0];
-                int id = Integer.parseInt(parts[1]);
-                String name = parts[2];
-                String status = parts[3];
-                String description = parts[4];
+                String type = buildText[0];
+                int id = Integer.parseInt(buildText[1]);
+                String name = buildText[2];
+                String status = buildText[3];
+                String description = buildText[4];
 
                 switch (type) {
                     case "TASK": {
@@ -66,7 +66,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
                         break;
                     }
                     case "SUBTASK": {
-                        int epicId = Integer.parseInt(parts[5]);
+                        int epicId = Integer.parseInt(buildText[5]);
                         Subtask subtask = new Subtask(name, description, id);
                         subtask.setStatus(TaskStatus.valueOf(status));
                         manager.tasks.put(id, subtask);
