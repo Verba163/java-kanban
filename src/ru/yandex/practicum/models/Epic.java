@@ -26,9 +26,14 @@ public class Epic extends Task {
         }
     }
 
+    @Override
+    public String toCSV() {
+        return super.toCSV();
+    }
 
     @Override
     public String toString() {
         return "Epic: " + this.title + ", Subtasks: " + this.subtasks.toString();
     }
+
 }
