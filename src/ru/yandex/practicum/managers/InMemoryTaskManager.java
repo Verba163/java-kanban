@@ -25,6 +25,7 @@ public class InMemoryTaskManager implements TaskManagers {
         this.epics = new HashMap<>();
         this.subtasksByEpic = new HashMap<>();
     }
+
     public boolean isTaskOverlapping(Task task) {
         List<Task> sortedTasks = new ArrayList<>(prioritizedTasks);
         LocalDateTime taskStart = task.getStartTime();
@@ -39,6 +40,7 @@ public class InMemoryTaskManager implements TaskManagers {
         }
         return false;
     }
+
     public boolean isSubtaskOverlapping(Subtask subtask) {
         return isTaskOverlapping(subtask);
     }
