@@ -5,14 +5,17 @@ import ru.yandex.practicum.models.Epic;
 import ru.yandex.practicum.models.Subtask;
 import ru.yandex.practicum.models.Task;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 
 public interface TaskManagers {
     int generateTaskId();
 
-    Task createTask(String title, String description);
+    Task createTask(String title, String description, Duration duration, LocalDateTime startTime);
 
-    Subtask createSubtask(String title, String description, int epicId);
+    Subtask createSubtask(String title, String description, Duration duration, LocalDateTime startTime, int epicId);
 
     Epic createEpic(String title, String description);
 
@@ -22,7 +25,8 @@ public interface TaskManagers {
 
     void deleteTask(int taskId);
 
-    ArrayList<Task> getAllTasks();
+    public Collection<Task> getAllTasks();
+
 
     ArrayList<Subtask> getSubtasksByEpic(int epicId);
 
