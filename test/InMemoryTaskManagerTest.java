@@ -8,10 +8,6 @@ import ru.yandex.practicum.managers.InMemoryTaskManager;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import org.junit.jupiter.api.Test;
-import java.util.ArrayList;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class InMemoryTaskManagerTest {
 

@@ -4,7 +4,6 @@ import ru.yandex.practicum.enums.TaskStatus;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Objects;
 
 public class Task implements Comparable<Task> {

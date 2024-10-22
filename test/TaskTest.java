@@ -5,9 +5,6 @@ import ru.yandex.practicum.models.Task;
 import ru.yandex.practicum.models.Epic;
 import ru.yandex.practicum.models.Subtask;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-
 public class TaskTest {
 
     @Test
