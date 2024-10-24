@@ -19,6 +19,10 @@ public class Subtask extends Task {
         return epic;
     }
 
+    public int getEpicId() {
+        return epic != null ? epic.getTaskId() : -1;
+    }
+
     @Override
     public String toCSV() {
         return "SUBTASK," + getTaskId() + "," + getTitle() + "," + getStatus() + "," + getDescription() + "," +

@@ -9,6 +9,7 @@ import ru.yandex.practicum.models.Task;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class InMemoryTaskManager implements TaskManagers {
 
@@ -25,24 +26,39 @@ public class InMemoryTaskManager implements TaskManagers {
         this.epics = new HashMap<>();
         this.subtasksByEpic = new HashMap<>();
     }
+    public boolean isOverlapping(Task task1, Task task2) {
+        LocalDateTime task1Start = task1.getStartTime();
+        LocalDateTime task1End = task1Start.plus(task1.getDuration());
+        LocalDateTime task2Start = task2.getStartTime();
+        LocalDateTime task2End = task2Start.plus(task2.getDuration());
 
-    public boolean isTaskOverlapping(Task task) {
-        List<Task> sortedTasks = new ArrayList<>(prioritizedTasks);
-        LocalDateTime taskStart = task.getStartTime();
-        LocalDateTime taskEnd = taskStart.plus(task.getDuration());
-
-        for (Task existingTask : sortedTasks) {
-            LocalDateTime existingTaskStart = existingTask.getStartTime();
-            LocalDateTime existingTaskEnd = existingTaskStart.plus(existingTask.getDuration());
-            if (existingTaskStart.isBefore(taskEnd) && taskStart.isBefore(existingTaskEnd)) {
-                return true;
-            }
-        }
-        return false;
+        return task1Start.isBefore(task2End) && task2Start.isBefore(task1End);
     }
 
-    public boolean isSubtaskOverlapping(Subtask subtask) {
-        return isTaskOverlapping(subtask);
+    public List<String> getTaskOverlapping(Task task) {
+        List<String> overlappingTasks = new ArrayList<>();
+        prioritizedTasks.forEach(existingTask -> {
+            if (isOverlapping(existingTask, task)) {
+                overlappingTasks.add("Задача '" + existingTask.getTitle() + "' пересекается с задачей '" + task.getTitle() + "'.");
+            }
+        });
+        return overlappingTasks;
+    }
+
+
+    public List<String> getOverlappingSubtasks(Subtask subtask) {
+        List<String> overlappingSubtaskMessages = new ArrayList<>();
+        List<Subtask> existingSubtasks = subtasksByEpic.get(subtask.getEpicId());
+
+        if (existingSubtasks != null) {
+            existingSubtasks.forEach(existingSubtask -> {
+                if (isOverlapping(existingSubtask, subtask)) {
+                    overlappingSubtaskMessages.add("Подзадача '" + existingSubtask.getTitle() + "' пересекается с подзадачей '" + subtask.getTitle() + "'.");
+                }
+            });
+        }
+
+        return overlappingSubtaskMessages;
     }
 
     @Override
@@ -54,8 +70,9 @@ public class InMemoryTaskManager implements TaskManagers {
     public Task createTask(String title, String description, Duration duration, LocalDateTime startTime) {
         int taskId = generateTaskId();
         Task task = new Task(title, description, taskId, duration, startTime);
-        if (isTaskOverlapping(task)) {
-            throw new IllegalArgumentException("Задача пересекается с существующей задачей.");
+        List<String> overlappingTasks = getTaskOverlapping(task);
+        if (!overlappingTasks.isEmpty()) {
+            throw new IllegalArgumentException("Задача пересекается с существующей задачей." + overlappingTasks);
         }
         tasks.put(taskId, task);
         prioritizedTasks.add(task);
@@ -68,8 +85,11 @@ public class InMemoryTaskManager implements TaskManagers {
         int taskId = generateTaskId();
 
         Subtask subtask = new Subtask(title, description, taskId, duration, startTime);
-        if (isSubtaskOverlapping(subtask)) {
-            throw new IllegalArgumentException("Подзадача пересекается с существующей задачей или подзадачей.");
+        subtask.setEpic(epics.get(epicId));
+        List<String> overlappingSubtask = getOverlappingSubtasks(subtask);
+
+        if (!getOverlappingSubtasks(subtask).isEmpty()) {
+            throw new IllegalArgumentException("Подзадача пересекается с существующей задачей или подзадачей." + overlappingSubtask);
         }
 
 
@@ -103,7 +123,7 @@ public class InMemoryTaskManager implements TaskManagers {
         if (existingTask != null) {
             prioritizedTasks.remove(existingTask);
         }
-        if (isTaskOverlapping(task)) {
+        if (!getTaskOverlapping(task).isEmpty()) {
             throw new IllegalArgumentException("Обновленная задача пересекается с существующей задачей.");
         }
 
@@ -124,7 +144,7 @@ public class InMemoryTaskManager implements TaskManagers {
     @Override
     public List<Task> getAllTasks() {
         return new ArrayList<>(prioritizedTasks);
-           }
+    }
 
     @Override
     public ArrayList<Subtask> getSubtasksByEpic(int epicId) {
