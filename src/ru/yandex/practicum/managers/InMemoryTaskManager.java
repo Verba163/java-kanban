@@ -9,7 +9,6 @@ import ru.yandex.practicum.models.Task;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class InMemoryTaskManager implements TaskManagers {
 
@@ -26,6 +25,7 @@ public class InMemoryTaskManager implements TaskManagers {
         this.epics = new HashMap<>();
         this.subtasksByEpic = new HashMap<>();
     }
+
     public boolean isOverlapping(Task task1, Task task2) {
         LocalDateTime task1Start = task1.getStartTime();
         LocalDateTime task1End = task1Start.plus(task1.getDuration());
@@ -44,7 +44,6 @@ public class InMemoryTaskManager implements TaskManagers {
         });
         return overlappingTasks;
     }
-
 
     public List<String> getOverlappingSubtasks(Subtask subtask) {
         List<String> overlappingSubtaskMessages = new ArrayList<>();
