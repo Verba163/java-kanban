@@ -1,12 +1,14 @@
 package ru.yandex.practicum.models;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Subtask extends Task {
     private Epic epic;
 
-    public Subtask(String title, String description, int taskId) {
-        super(title, description, taskId);
+    public Subtask(String title, String description, int taskId, Duration duration, LocalDateTime startTime) {
+        super(title, description, taskId, duration, startTime);
     }
 
     public void setEpic(Epic epic) {
@@ -17,15 +19,28 @@ public class Subtask extends Task {
         return epic;
     }
 
-    @Override
-    public String toCSV() {
-        return super.toCSV() + epic.getTaskId();
+    public int getEpicId() {
+        return epic != null ? epic.getTaskId() : -1;
     }
 
     @Override
-    public String toString() {
-        return "Subtask{id=" + getTaskId() + ", title='" + getTitle() + "', status='" + getStatus() + "'}";
+    public String toCSV() {
+        return "SUBTASK," + getTaskId() + "," + getTitle() + "," + getStatus() + "," + getDescription() + "," +
+                getDuration().toString() + "," + getStartTime().toString() + "," + getEndTime().toString() + "," + epic.getTaskId();
     }
+
+
+
+    @Override
+    public String toString() {
+            return "Subtask{id=" + getTaskId() + ", title='" + getTitle() +
+                    "', status='" + getStatus() +
+                    "', duration=" + getDuration().toMinutes() +
+                    ", startTime=" + getStartTime() +
+                    ", endTime=" + getEndTime() +
+                    "}";
+
+        }
 
 
     @Override
