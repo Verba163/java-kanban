@@ -44,7 +44,7 @@ class OverLapTests {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             taskManager.createSubtask("Subtask 2", "Description 2", Duration.ofHours(2), LocalDateTime.of(2023, 10, 1, 11, 0), epic.getTaskId());
         });
-        assertEquals("Подзадача пересекается с существующей задачей или подзадачей.[Подзадача 'Subtask 1' пересекается с подзадачей 'Subtask 2'.]", exception.getMessage());
+        assertEquals("Подзадача пересекается с существующими задачами или подзадачами: Подзадача 'Subtask 2'", exception.getMessage());
     }
 
 }

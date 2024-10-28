@@ -19,13 +19,13 @@ class FileBackedTaskManagerTest {
 
     @BeforeEach
     void setUp() throws IOException {
-        tempFile = File.createTempFile("test_data", ".csv"); // Создание временного файла с расширением .csv
+        tempFile = File.createTempFile("test_data", ".csv");
         manager = new FileBackedTaskManager(tempFile);
     }
 
     @AfterEach
     void tearDown() {
-        tempFile.delete(); // Удаление временного файла после каждого теста
+        tempFile.delete();
     }
 
     @Test

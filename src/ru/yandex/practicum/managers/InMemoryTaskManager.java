@@ -16,6 +16,8 @@ public class InMemoryTaskManager implements TaskManagers {
     public final HashMap<Integer, Task> tasks;
     public final HashMap<Integer, Epic> epics;
     public final HashMap<Integer, ArrayList<Subtask>> subtasksByEpic;
+    private final List<Subtask> subtasks = new ArrayList<>();
+    private final List<Epic> epicsList = new ArrayList<>();
     public final TreeSet<Task> prioritizedTasks = new TreeSet<>();
 
 
@@ -45,19 +47,19 @@ public class InMemoryTaskManager implements TaskManagers {
         return overlappingTasks;
     }
 
-    public List<String> getOverlappingSubtasks(Subtask subtask) {
-        List<String> overlappingSubtaskMessages = new ArrayList<>();
-        List<Subtask> existingSubtasks = subtasksByEpic.get(subtask.getEpicId());
+    public List<Subtask> getOverlappingSubtasks(Subtask newSubtask) {
+        List<Subtask> overlappingSubtasks = new ArrayList<>();
+        List<Subtask> existingSubtasks = subtasksByEpic.get(newSubtask.getEpicId());
 
         if (existingSubtasks != null) {
-            existingSubtasks.forEach(existingSubtask -> {
-                if (isOverlapping(existingSubtask, subtask)) {
-                    overlappingSubtaskMessages.add("Подзадача '" + existingSubtask.getTitle() + "' пересекается с подзадачей '" + subtask.getTitle() + "'.");
+            for (Subtask existingSubtask : existingSubtasks) {
+                if (isOverlapping(existingSubtask, newSubtask)) {
+                    overlappingSubtasks.add(existingSubtask);
                 }
-            });
+            }
         }
 
-        return overlappingSubtaskMessages;
+        return overlappingSubtasks;
     }
 
     @Override
@@ -82,15 +84,18 @@ public class InMemoryTaskManager implements TaskManagers {
     @Override
     public Subtask createSubtask(String title, String description, Duration duration, LocalDateTime startTime, int epicId) {
         int taskId = generateTaskId();
-
         Subtask subtask = new Subtask(title, description, taskId, duration, startTime);
-        subtask.setEpic(epics.get(epicId));
-        List<String> overlappingSubtask = getOverlappingSubtasks(subtask);
+        subtask.setEpic(epics.get(epicId)); // Убедитесь, что epicId корректно передается
 
-        if (!getOverlappingSubtasks(subtask).isEmpty()) {
-            throw new IllegalArgumentException("Подзадача пересекается с существующей задачей или подзадачей." + overlappingSubtask);
+        List<Subtask> overlappingSubtask = getOverlappingSubtasks(subtask);
+        if (!overlappingSubtask.isEmpty()) {
+            StringBuilder message = new StringBuilder("Подзадача пересекается с существующими задачами или подзадачами: ");
+            for (Subtask existingSubtask : overlappingSubtask) {
+                message.append(String.format("Подзадача '%s', ", subtask.getTitle()));
+            }
+            message.setLength(message.length() - 2);
+            throw new IllegalArgumentException(message.toString());
         }
-
 
         Epic epic = epics.get(epicId);
         if (epic != null) {
@@ -99,6 +104,7 @@ public class InMemoryTaskManager implements TaskManagers {
             updateEpicStatus(epic);
             prioritizedTasks.add(epic);
         }
+        subtasks.add(subtask);
         prioritizedTasks.add(subtask);
         return subtask;
     }
@@ -108,7 +114,30 @@ public class InMemoryTaskManager implements TaskManagers {
         int taskId = generateTaskId();
         Epic epic = new Epic(title, description, taskId);
         epics.put(taskId, epic);
+        epicsList.add(epic);
+        prioritizedTasks.add(epic);
         return epic;
+    }
+
+    @Override
+    public List<Epic> getAllEpics() {
+        return new ArrayList<>(epicsList);
+    }
+
+    @Override
+    public void addEpic(Epic epic) {
+        epicsList.add(epic);
+    }
+
+
+    @Override
+    public Epic getEpic(int id) {
+        for (Epic epic : epicsList) {
+            if (epic.getTaskId() == id) {
+                return epic;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -141,8 +170,39 @@ public class InMemoryTaskManager implements TaskManagers {
 
 
     @Override
+    public void deleteSubtask(int subtaskId) {
+        Subtask subtaskToRemove = null;
+
+        for (Subtask subtask : subtasks) {
+            if (subtask.getTaskId() == subtaskId) {
+                subtaskToRemove = subtask;
+                break;
+            }
+        }
+
+        if (subtaskToRemove != null) {
+            subtasks.remove(subtaskToRemove);
+            prioritizedTasks.remove(subtaskToRemove);
+            System.out.println("Подзадача с ID " + subtaskId + " удалена.");
+        } else {
+            System.out.println("Подзадача с ID " + subtaskId + " не найдена.");
+        }
+
+    }
+
+    @Override
     public List<Task> getAllTasks() {
         return new ArrayList<>(prioritizedTasks);
+    }
+
+    @Override
+    public Subtask getSubtask(int id) {
+        for (Subtask subtask : subtasks) {
+            if (subtask.getTaskId() == id) {
+                return subtask;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -166,6 +226,12 @@ public class InMemoryTaskManager implements TaskManagers {
         } else {
             epic.setStatus(TaskStatus.IN_PROGRESS);
         }
+    }
+
+
+    @Override
+    public List<Subtask> getAllSubtasks() {
+        return new ArrayList<>(subtasks);
     }
 
     @Override
