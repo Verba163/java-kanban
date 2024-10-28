@@ -3,13 +3,10 @@ package ru.yandex.practicum.http;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import ru.yandex.practicum.http.BaseHttpHandler;
 import ru.yandex.practicum.interfaces.HistoryManager;
 import ru.yandex.practicum.models.Task;
 
 import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class HistoryManagerHandler extends BaseHttpHandler implements HttpHandler {
