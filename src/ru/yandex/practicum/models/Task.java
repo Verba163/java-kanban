@@ -13,7 +13,7 @@ public class Task implements Comparable<Task> {
     private final int taskId;
     protected TaskStatus status;
     protected Duration duration;
-    private LocalDateTime startTime;
+    public LocalDateTime startTime;
 
 
     public Task(String title, String description, int taskId, Duration duration, LocalDateTime startTime) {

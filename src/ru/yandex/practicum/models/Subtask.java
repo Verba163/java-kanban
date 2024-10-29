@@ -29,18 +29,16 @@ public class Subtask extends Task {
                 getDuration().toString() + "," + getStartTime().toString() + "," + getEndTime().toString() + "," + epic.getTaskId();
     }
 
-
-
     @Override
     public String toString() {
-            return "Subtask{id=" + getTaskId() + ", title='" + getTitle() +
-                    "', status='" + getStatus() +
-                    "', duration=" + getDuration().toMinutes() +
-                    ", startTime=" + getStartTime() +
-                    ", endTime=" + getEndTime() +
-                    "}";
+        return "Subtask{id=" + getTaskId() + ", title='" + getTitle() +
+                "', status='" + getStatus() +
+                "', duration=" + getDuration().toMinutes() +
+                ", startTime=" + getStartTime() +
+                ", endTime=" + getEndTime() +
+                "}";
 
-        }
+    }
 
 
     @Override

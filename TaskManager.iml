@@ -42,5 +42,8 @@
     </orderEntry>
     <orderEntry type="library" name="lib" level="project" />
     <orderEntry type="library" name="junit.jupiter" level="project" />
+    <orderEntry type="library" name="google.http.client.gson" level="project" />
+    <orderEntry type="library" name="mockito.all" level="project" />
+    <orderEntry type="library" name="bluecatcode.mockito.1.10.19.extended" level="project" />
   </component>
 </module>
