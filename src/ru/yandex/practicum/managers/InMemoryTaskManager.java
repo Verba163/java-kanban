@@ -183,9 +183,9 @@ public class InMemoryTaskManager implements TaskManagers {
         if (subtaskToRemove != null) {
             subtasks.remove(subtaskToRemove);
             prioritizedTasks.remove(subtaskToRemove);
-            System.out.println(String.format("Подзадача с ID %d удалена.", subtaskId));
+            System.out.printf("Подзадача с ID %d удалена.", subtaskId);
         } else {
-            System.out.println(String.format("Подзадача с ID %d не найдена.", subtaskId));
+            System.out.printf("Подзадача с ID %d не найдена.", subtaskId);
         }
 
     }
@@ -248,9 +248,9 @@ public class InMemoryTaskManager implements TaskManagers {
         Task task = tasks.get(taskId);
         if (task != null) {
             task.setStatus(newStatus);
-            System.out.println(String.format("Статус задачи с ID %d обновлён на %s.", taskId, newStatus));
+            System.out.printf("Статус задачи с ID %d обновлён на %s.", taskId, newStatus);
         } else {
-            System.out.println(String.format("Задача с ID %d не найдена.", taskId));
+            System.out.printf("Задача с ID %d не найдена.", taskId);
         }
     }
 

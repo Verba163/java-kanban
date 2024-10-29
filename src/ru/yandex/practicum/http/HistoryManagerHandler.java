@@ -21,8 +21,7 @@ public class HistoryManagerHandler extends BaseHttpHandler implements HttpHandle
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        System.out.println("Началась обработка запросов: " + exchange.getRequestMethod() + " " + exchange.getRequestURI());
-
+        System.out.printf("Началась обработка запросов: %s %s%n", exchange.getRequestMethod(), exchange.getRequestURI());
         switch (exchange.getRequestMethod()) {
             case "GET":
                 handleGetHistory(exchange);

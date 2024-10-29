@@ -29,7 +29,7 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        System.out.println("Началась обработка запросов: " + exchange.getRequestMethod() + " " + exchange.getRequestURI());
+        System.out.printf("Началась обработка запросов: %s %s%n", exchange.getRequestMethod(), exchange.getRequestURI());
         switch (exchange.getRequestMethod()) {
             case "GET":
                 handleGetTask(exchange);
@@ -86,7 +86,7 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
                 createTask(task, exchange);
             }
         } catch (Exception e) {
-            System.out.println(String.format("Ошибка при обработке POST запроса: %s", e.getMessage()));
+            System.out.printf("Ошибка при обработке POST запроса: %s", e.getMessage());
             sendErrorResponse(exchange, "Ошибка сервера", 500);
         }
     }
@@ -95,7 +95,7 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
         try {
             return gson.fromJson(requestBody, Task.class);
         } catch (JsonSyntaxException e) {
-            System.out.println(String.format("Ошибка синтаксиса JSON: %s", e.getMessage()));
+            System.out.printf("Ошибка синтаксиса JSON: %s", e.getMessage());
             return null;
         }
     }
@@ -115,7 +115,7 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
             httpTaskManager.updateTask(task);
             sendResponse(exchange, "{\"Status\":\"Задача обновлена\"}", 200);
         } catch (Exception e) {
-            System.out.println(String.format("Ошибка обновления задачи: %s", e.getMessage()));
+            System.out.printf("Ошибка обновления задачи: %s", e.getMessage());
             sendErrorResponse(exchange, "Произошла ошибка при обновлении задачи", 500);
         }
     }
@@ -125,7 +125,7 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
             httpTaskManager.createTask(task.getTitle(), task.getDescription(), task.getDuration(), task.getStartTime());
             sendResponse(exchange, "{\"Status\":\"Задача добавлена\"}", 201);
         } catch (Exception e) {
-            System.out.println(String.format("Ошибка обновления задачи: %s", e.getMessage()));
+            System.out.printf("Ошибка обновления задачи: %s", e.getMessage());
             sendErrorResponse(exchange, "Произошла ошибка при создании задачи", 500);
         }
     }
