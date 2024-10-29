@@ -86,7 +86,7 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
                 createTask(task, exchange);
             }
         } catch (Exception e) {
-            System.out.println("Ошибка при обработке POST запроса: " + e.getMessage());
+            System.out.println(String.format("Ошибка при обработке POST запроса: %s", e.getMessage()));
             sendErrorResponse(exchange, "Ошибка сервера", 500);
         }
     }
@@ -95,7 +95,7 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
         try {
             return gson.fromJson(requestBody, Task.class);
         } catch (JsonSyntaxException e) {
-            System.out.println("Ошибка синтаксиса JSON: " + e.getMessage());
+            System.out.println(String.format("Ошибка синтаксиса JSON: %s", e.getMessage()));
             return null;
         }
     }
@@ -113,9 +113,9 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
     private void updateTask(Task task, HttpExchange exchange) throws IOException {
         try {
             httpTaskManager.updateTask(task);
-            sendResponse(exchange, "{\"status\":\"Задача обновлена\"}", 200);
+            sendResponse(exchange, "{\"Status\":\"Задача обновлена\"}", 200);
         } catch (Exception e) {
-            System.out.println("Ошибка обновления задачи: " + e.getMessage());
+            System.out.println(String.format("Ошибка обновления задачи: %s", e.getMessage()));
             sendErrorResponse(exchange, "Произошла ошибка при обновлении задачи", 500);
         }
     }
@@ -123,9 +123,9 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
     private void createTask(Task task, HttpExchange exchange) throws IOException {
         try {
             httpTaskManager.createTask(task.getTitle(), task.getDescription(), task.getDuration(), task.getStartTime());
-            sendResponse(exchange, "{\"status\":\"Задача добавлена\"}", 201);
+            sendResponse(exchange, "{\"Status\":\"Задача добавлена\"}", 201);
         } catch (Exception e) {
-            System.out.println("Ошибка создания задачи: " + e.getMessage());
+            System.out.println(String.format("Ошибка обновления задачи: %s", e.getMessage()));
             sendErrorResponse(exchange, "Произошла ошибка при создании задачи", 500);
         }
     }

@@ -27,13 +27,13 @@ class OverLapTests {
             taskManager.createTask("Task 2", "Description 2", Duration.ofHours(2), LocalDateTime.of(2023, 10, 1, 11, 0));
             taskManager.createTask("Task 4", "Description 4", Duration.ofHours(2), LocalDateTime.of(2024, 10, 1, 11, 0));
         });
-        assertEquals("Задача пересекается с существующей задачей.[Задача 'Task 1' пересекается с задачей 'Task 2'.]", exception.getMessage());
+        assertEquals("Задача пересекается с существующей задачей: [Задача 'Task 1' пересекается с задачей 'Task 2'.]", exception.getMessage());
 
         Exception ex = assertThrows(IllegalArgumentException.class, () -> {
 
             taskManager.createTask("Task 4", "Description 4", Duration.ofHours(2), LocalDateTime.of(2024, 10, 1, 11, 0));
         });
-        assertEquals("Задача пересекается с существующей задачей.[Задача 'Task 3' пересекается с задачей 'Task 4'.]", ex.getMessage());
+        assertEquals("Задача пересекается с существующей задачей: [Задача 'Task 3' пересекается с задачей 'Task 4'.]", ex.getMessage());
     }
 
     @Test

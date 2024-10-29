@@ -31,7 +31,7 @@ public class HttpTaskServer {
         httpServer.setExecutor(null);
         httpServer.start();
 
-        System.out.println("HTTP-сервер запущен на " + PORT + " порту!");
+        System.out.println(String.format("HTTP-сервер запущен на %s%s ", PORT, " порту!"));
     }
 
     private static void initializeTestData(TaskManagers httpTaskManager, int numberOfTasks) {

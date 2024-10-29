@@ -41,7 +41,7 @@ public class InMemoryTaskManager implements TaskManagers {
         List<String> overlappingTasks = new ArrayList<>();
         prioritizedTasks.forEach(existingTask -> {
             if (isOverlapping(existingTask, task)) {
-                overlappingTasks.add("Задача '" + existingTask.getTitle() + "' пересекается с задачей '" + task.getTitle() + "'.");
+                overlappingTasks.add(String.format("Задача '%s' пересекается с задачей '%s'.", existingTask.getTitle(), task.getTitle()));
             }
         });
         return overlappingTasks;
@@ -73,7 +73,7 @@ public class InMemoryTaskManager implements TaskManagers {
         Task task = new Task(title, description, taskId, duration, startTime);
         List<String> overlappingTasks = getTaskOverlapping(task);
         if (!overlappingTasks.isEmpty()) {
-            throw new IllegalArgumentException("Задача пересекается с существующей задачей." + overlappingTasks);
+            throw new IllegalArgumentException(String.format("Задача пересекается с существующей задачей: %s", overlappingTasks));
         }
         tasks.put(taskId, task);
         prioritizedTasks.add(task);
@@ -183,9 +183,9 @@ public class InMemoryTaskManager implements TaskManagers {
         if (subtaskToRemove != null) {
             subtasks.remove(subtaskToRemove);
             prioritizedTasks.remove(subtaskToRemove);
-            System.out.println("Подзадача с ID " + subtaskId + " удалена.");
+            System.out.println(String.format("Подзадача с ID %d удалена.", subtaskId));
         } else {
-            System.out.println("Подзадача с ID " + subtaskId + " не найдена.");
+            System.out.println(String.format("Подзадача с ID %d не найдена.", subtaskId));
         }
 
     }
@@ -248,9 +248,9 @@ public class InMemoryTaskManager implements TaskManagers {
         Task task = tasks.get(taskId);
         if (task != null) {
             task.setStatus(newStatus);
-            System.out.println("Статус задачи с ID " + taskId + " обновлён на " + newStatus);
+            System.out.println(String.format("Статус задачи с ID %d обновлён на %s.", taskId, newStatus));
         } else {
-            System.out.println("Задача с ID " + taskId + " не найдена.");
+            System.out.println(String.format("Задача с ID %d не найдена.", taskId));
         }
     }
 
